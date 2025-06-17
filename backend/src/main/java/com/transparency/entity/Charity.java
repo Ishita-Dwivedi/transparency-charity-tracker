@@ -3,7 +3,6 @@ package com.transparency.entity;
 import jakarta.persistence.*;
 import java.util.List;
 import java.time.LocalDateTime;
-
 @Entity
 public class Charity {
 
