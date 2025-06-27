@@ -29,7 +29,7 @@ public class User {
     private List<Donation> donations;
 
     public enum Role {
-        DONOR, ADMIN
+        DONOR, ADMIN,
     }
 
 

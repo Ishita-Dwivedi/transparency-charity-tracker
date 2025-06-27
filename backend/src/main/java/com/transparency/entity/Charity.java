@@ -11,22 +11,22 @@ public class Charity {
     private Long id;
 
     private String name;
-
+    @Lob
+    @Column(length = 5000)
     private String description;
+    private String motto;
+    private String leader;
+    @Lob
+    @Column(length = 5000)
+    private String state;
 
-    private String registrationNumber;
+    private Double totalRevenue;
+    private Double programExpenses;
+    private Double fundraisingExpenses;
+    private Double administrativeExpenses;
 
-    private String contactEmail;
+    // == Getters and Setters ==
 
-    private LocalDateTime createdAt;
-
-    @OneToMany(mappedBy = "charity", cascade = CascadeType.ALL)
-    private List<Donation> donations;
-
-    @OneToMany(mappedBy = "charity", cascade = CascadeType.ALL)
-    private List<SpendingReport> reports;
-
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -51,28 +51,60 @@ public class Charity {
         this.description = description;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public String getMotto() {
+        return motto;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setMotto(String motto) {
+        this.motto = motto;
     }
 
-    public List<Donation> getDonations() {
-        return donations;
+    public String getLeader() {
+        return leader;
     }
 
-    public void setDonations(List<Donation> donations) {
-        this.donations = donations;
+    public void setLeader(String leader) {
+        this.leader = leader;
     }
 
-    public List<SpendingReport> getReports() {
-        return reports;
+    public String getState() {
+        return state;
     }
 
-    public void setReports(List<SpendingReport> reports) {
-        this.reports = reports;
+    public void setState(String state) {
+        this.state = state;
     }
 
+    public Double getTotalRevenue() {
+        return totalRevenue;
+    }
+
+    public void setTotalRevenue(Double totalRevenue) {
+        this.totalRevenue = totalRevenue;
+    }
+
+    public Double getProgramExpenses() {
+        return programExpenses;
+    }
+
+    public void setProgramExpenses(Double programExpenses) {
+        this.programExpenses = programExpenses;
+    }
+
+    public Double getFundraisingExpenses() {
+        return fundraisingExpenses;
+    }
+
+    public void setFundraisingExpenses(Double fundraisingExpenses) {
+        this.fundraisingExpenses = fundraisingExpenses;
+    }
+
+    public Double getAdministrativeExpenses() {
+        return administrativeExpenses;
+    }
+
+    public void setAdministrativeExpenses(Double administrativeExpenses) {
+        this.administrativeExpenses = administrativeExpenses;
+    }
 }
+

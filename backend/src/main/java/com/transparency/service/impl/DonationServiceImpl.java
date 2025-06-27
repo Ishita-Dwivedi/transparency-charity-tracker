@@ -1,10 +1,13 @@
 package com.transparency.service.impl;
 
+import com.transparency.entity.Charity;
 import com.transparency.entity.Donation;
+import com.transparency.exception.CharityNotFoundException;
 import com.transparency.repository.DonationRepository;
 import com.transparency.service.DonationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.transparency.exception.DonationNotFoundException;
 
 import java.util.List;
 
@@ -21,7 +24,8 @@ public class DonationServiceImpl implements DonationService {
 
     @Override
     public Donation getDonationById(Long id) {
-        return donationRepository.findById(id).orElse(null);
+        return donationRepository.findById(id)
+                .orElseThrow(() -> new DonationNotFoundException("Donation not found with id: " + id));
     }
 
     @Override

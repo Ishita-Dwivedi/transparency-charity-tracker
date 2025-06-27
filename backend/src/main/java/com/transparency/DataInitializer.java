@@ -36,7 +36,7 @@ public class DataInitializer implements CommandLineRunner {
             Charity charity = new Charity();
             charity.setName("Helping Hands");
             charity.setDescription("Providing aid for underprivileged.");
-            charity.setCreatedAt(LocalDateTime.now());
+           // charity.setCreatedAt(LocalDateTime.now());
             charityRepository.save(charity);
 
             Donation donation = new Donation();
