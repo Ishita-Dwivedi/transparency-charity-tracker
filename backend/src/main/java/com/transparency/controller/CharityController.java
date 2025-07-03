@@ -36,6 +36,6 @@ public class CharityController {
         charity.setLeader(charityDTO.getLeader());
         charity.setState(charityDTO.getState());
 
-        return charityService.createCharity(charity);
+        return charityService.createCharityFromDto(charityDTO);
     }
 }

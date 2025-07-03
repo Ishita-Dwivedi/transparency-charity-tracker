@@ -2,6 +2,7 @@ package com.transparency.controller;
 
 import com.transparency.entity.Donation;
 import com.transparency.service.DonationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class DonationController {
     }
 
     @PostMapping
-    public Donation createDonation(@RequestBody Donation donation) {
+    public Donation createDonation(@RequestBody @Valid Donation donation) {
         return donationService.createDonation(donation);
     }
 

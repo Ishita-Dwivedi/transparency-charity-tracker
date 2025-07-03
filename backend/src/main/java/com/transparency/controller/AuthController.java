@@ -15,7 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Optional;
 import java.util.Collections;
 
 @RestController
@@ -47,22 +49,61 @@ public class AuthController {
         // Encrypt password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        // just for checking
+        System.out.println("📝 Registering user: " + user.getEmail());
+        System.out.println("🔐 Encoded password: " + user.getPassword());
+
 
         return ResponseEntity.ok("✅ User registered successfully!");
     }
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
         try {
+            System.out.println("🔐 Authenticating user: " + request.getEmail());
+
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
+
+            System.out.println("✅ Auth successful");
+
         } catch (Exception ex) {
+            System.out.println("❌ Authentication failed: " + ex.getMessage());
+            ex.printStackTrace(); // Should show in console if configured
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
-        String token = jwtUtil.generateToken(userDetails);
-        return ResponseEntity.ok(Collections.singletonMap("token", token));
+        try {
+            System.out.println("🔄 Loading user details...");
+            UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
+
+            System.out.println("🔐 Generating token...");
+            String token = jwtUtil.generateToken(userDetails);
+
+            System.out.println("🔍 Fetching user entity...");
+            Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+            if (optionalUser.isEmpty()) {
+                System.out.println("⚠️ User not found in DB.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            }
+
+            User user = optionalUser.get();
+            System.out.println("👤 Role: " + user.getRole());
+
+            Map<String, String> response = new HashMap<>();
+            response.put("token", token);
+            response.put("role", user.getRole().name());
+
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            System.out.println("💥 Post-auth error: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Login failed due to server error");
+        }
     }
+
+
+
 }
 
